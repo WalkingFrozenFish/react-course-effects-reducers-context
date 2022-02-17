@@ -81,6 +81,15 @@ const Login = (props) => {
 
   // Таким образом мы объединили два состояния в одно
   const [emailState, dispatchEmailState] = useReducer(emailReducer, { value: "", isValid: false });
+
+
+  // Создаем хук useReducer, где с помощью деструтуризации объявляем переменные
+  // Переменная с состоянием
+  // Переменная с функцией, для редактирования состояния
+  // Хук принимает несколько параметров, коллбек функция и состояние по умолчанию
+  // Коллбек функция, reducer, принимает в аргумент предыдущее состояние и некоторый action
+  // В зависимости от action, определяем состояние, и возвращаем новое состояние
+  // Состояние записывается в переменную состояния
   const [passwordState, dispatchPasswordState] = useReducer(passwordReducer, { value: "", isValid: false });
 
   {
@@ -112,13 +121,16 @@ const Login = (props) => {
     // }, [inputEmail, inputPassword]);
   }
 
-
+  // С помощью деструктуризации создаем переменные, где хранятся значения
+  // С помощью alias свойствам полученным из состояния, даем названия
+  const { isValid: emailIsValid } = emailState;
+  const { isValid: passwordIsValid } = passwordState;
 
   useEffect(() => {
     const timer = setTimeout(() => {
       console.log("Effect function");
       setFormIsValid(
-        emailState.isValid && passwordState.isValid
+        emailIsValid && passwordIsValid
       );
     }, 3000);
 
@@ -126,7 +138,7 @@ const Login = (props) => {
       console.log("Очистка");
       clearTimeout(timer)
     }
-  }, [emailState, passwordState]);
+  }, [emailIsValid, passwordIsValid]);
 
 
 
