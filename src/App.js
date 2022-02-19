@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import Login from "./components/Login/Login";
 import Home from "./components/Home/Home";
 import MainHeader from "./components/MainHeader/MainHeader";
+import AuthContext from "./store/auth-context.js";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -35,11 +36,20 @@ function App() {
 
   return (
     <React.Fragment>
-      <MainHeader isAuthenticated={isLoggedIn} onLogout={logoutHandler} />
-      <main>
-        {!isLoggedIn && <Login onLogin={loginHandler} />}
-        {isLoggedIn && <Home onLogout={logoutHandler} />}
-      </main>
+      {/* Метод Provider у AuthContext позволит использовать компонент. Обернув в этот компонент все дочерние компоненты, мы сделали так что все дочерние компоненты имеют доступ к контексту AuthContext */}
+      {/* Мы предоставили контекст тем компонентам, которые мы обернули в AuthContext.Provider */}
+      {/* Затем мы должны прослушивать этот контекст */}
+
+      {/* Передавая объект, мы сразу передаем обновляемое значение, и можем уже не передавать props с этими данными, так как через контекст передали данные напрямую */}
+      <AuthContext.Provider value={{
+        isLoggedIn: isLoggedIn
+      }}>
+        <MainHeader onLogout={logoutHandler} />
+        <main>
+          {!isLoggedIn && <Login onLogin={loginHandler} />}
+          {isLoggedIn && <Home onLogout={logoutHandler} />}
+        </main>
+      </AuthContext.Provider>
     </React.Fragment>
   );
 }
