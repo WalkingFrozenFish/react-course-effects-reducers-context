@@ -1,4 +1,4 @@
-import React, { useEffect, useReducer, useState, useContext } from "react";
+import React, { useEffect, useReducer, useState, useContext, useRef } from "react";
 import Card from "../UI/Card/Card";
 import styles from "./Login.module.css";
 import Button from "../UI/Button/Button";
@@ -129,6 +129,9 @@ const Login = (props) => {
 
   const ctx = useContext(AuthContext);
 
+  const emailInputRef = useRef();
+  const passwordInputRef = useRef();
+
   useEffect(() => {
     const timer = setTimeout(() => {
       console.log("Effect function");
@@ -183,14 +186,24 @@ const Login = (props) => {
 
   const submitHandler = (event) => {
     event.preventDefault();
+    if (formIsValid) {
+      ctx.onLogin(emailState.value, passwordState.value);
+    } else if (!emailIsValid) {
+      emailInputRef.current.focus();
+    } else {
+      passwordInputRef.current.focus();
+    }
+
+
     // В данном случае мы отправляем значение из поля value, из состояния emailState
-    ctx.onLogin(emailState.value, passwordState.value);
+    // ctx.onLogin(emailState.value, passwordState.value);
   };
 
   return (
     <Card className={styles.login}>
       <form onSubmit={submitHandler}>
         <Input
+          ref={emailInputRef}
           id="email"
           label="Email"
           type="email"
@@ -215,6 +228,7 @@ const Login = (props) => {
         </div> */}
 
         <Input
+          ref={passwordInputRef}
           id="password"
           label="Пароль"
           type="password"
@@ -238,7 +252,8 @@ const Login = (props) => {
           />
         </div> */}
         <div className={styles.actions}>
-          <Button type="submit" className={styles.btn} disabled={!formIsValid}>
+          {/* <Button type="submit" className={styles.btn} disabled={!formIsValid}> */}
+          <Button type="submit" className={styles.btn}>
             Вход
           </Button>
         </div>
