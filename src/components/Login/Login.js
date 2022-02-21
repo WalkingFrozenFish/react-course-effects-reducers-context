@@ -1,9 +1,9 @@
 import React, { useEffect, useReducer, useState, useContext } from "react";
-
 import Card from "../UI/Card/Card";
 import styles from "./Login.module.css";
 import Button from "../UI/Button/Button";
 import AuthContext from "../../store/auth-context";
+import Input from "../UI/Input/Input";
 
 // Данная функция будет передаваться в хук useReducer
 // В функцию передается состояние и action автоматически
@@ -190,7 +190,16 @@ const Login = (props) => {
   return (
     <Card className={styles.login}>
       <form onSubmit={submitHandler}>
-        <div
+        <Input
+          id="email"
+          label="Email"
+          type="email"
+          isValid={emailIsValid}
+          value={emailState.value}
+          onChange={emailChangeHandler}
+          onBlur={validateEmailHandler}
+        />
+        {/* <div
           // Так же используем значение из состояния emailState
           className={`${styles.control} ${emailState.isValid === false ? styles.invalid : ""
             }`}
@@ -203,8 +212,19 @@ const Login = (props) => {
             onChange={emailChangeHandler}
             onBlur={validateEmailHandler}
           />
-        </div>
-        <div
+        </div> */}
+
+        <Input
+          id="password"
+          label="Пароль"
+          type="password"
+          isValid={passwordIsValid}
+          value={passwordState.value}
+          onChange={passwordChangeHandler}
+          onBlur={validatePasswordHandler}
+        />
+
+        {/* <div
           className={`${styles.control} ${passwordState.isValid === false ? styles.invalid : ""
             }`}
         >
@@ -216,7 +236,7 @@ const Login = (props) => {
             onChange={passwordChangeHandler}
             onBlur={validatePasswordHandler}
           />
-        </div>
+        </div> */}
         <div className={styles.actions}>
           <Button type="submit" className={styles.btn} disabled={!formIsValid}>
             Вход
