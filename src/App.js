@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 
 import Login from "./components/Login/Login";
 import Home from "./components/Home/Home";
@@ -15,24 +15,26 @@ function App() {
   // При изменении какой либо зависимости в массиве, будет вызвана функция, которую мы передали первым аргументом.
   // Если массив с зависимостями будет пустой, то данный хук вызовет функцию только один раз при загрузке приложения
 
-  useEffect(() => {
-    const storedLoginInfo = localStorage.getItem("isLoggedIn")
+  // useEffect(() => {
+  //   const storedLoginInfo = localStorage.getItem("isLoggedIn")
 
-    if (storedLoginInfo === "1") {
-      setIsLoggedIn(true);
-    }
-  }, []);
+  //   if (storedLoginInfo === "1") {
+  //     setIsLoggedIn(true);
+  //   }
+  // }, []);
 
 
-  const loginHandler = (email, password) => {
-    localStorage.setItem("isLoggedIn", "1");
-    setIsLoggedIn(true);
-  };
+  // const loginHandler = (email, password) => {
+  //   localStorage.setItem("isLoggedIn", "1");
+  //   setIsLoggedIn(true);
+  // };
 
-  const logoutHandler = () => {
-    localStorage.removeItem("isLoggedIn");
-    setIsLoggedIn(false);
-  };
+  // const logoutHandler = () => {
+  //   localStorage.removeItem("isLoggedIn");
+  //   setIsLoggedIn(false);
+  // };
+
+  const ctx = useContext(AuthContext);
 
   return (
     <React.Fragment>
@@ -41,15 +43,16 @@ function App() {
       {/* Затем мы должны прослушивать этот контекст */}
 
       {/* Передавая объект, мы сразу передаем обновляемое значение, и можем уже не передавать props с этими данными, так как через контекст передали данные напрямую */}
-      <AuthContext.Provider value={{
-        isLoggedIn: isLoggedIn
-      }}>
-        <MainHeader onLogout={logoutHandler} />
-        <main>
-          {!isLoggedIn && <Login onLogin={loginHandler} />}
-          {isLoggedIn && <Home onLogout={logoutHandler} />}
-        </main>
-      </AuthContext.Provider>
+      {/* <AuthContext.Provider value={{
+        isLoggedIn: isLoggedIn,
+        onLogout: logoutHandler
+      }}> */}
+      <MainHeader />
+      <main>
+        {!ctx.isLoggedIn && <Login />}
+        {ctx.isLoggedIn && <Home />}
+      </main>
+      {/* </AuthContext.Provider> */}
     </React.Fragment>
   );
 }

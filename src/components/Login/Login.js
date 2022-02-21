@@ -1,8 +1,9 @@
-import React, { useEffect, useReducer, useState } from "react";
+import React, { useEffect, useReducer, useState, useContext } from "react";
 
 import Card from "../UI/Card/Card";
 import styles from "./Login.module.css";
 import Button from "../UI/Button/Button";
+import AuthContext from "../../store/auth-context";
 
 // Данная функция будет передаваться в хук useReducer
 // В функцию передается состояние и action автоматически
@@ -126,6 +127,8 @@ const Login = (props) => {
   const { isValid: emailIsValid } = emailState;
   const { isValid: passwordIsValid } = passwordState;
 
+  const ctx = useContext(AuthContext);
+
   useEffect(() => {
     const timer = setTimeout(() => {
       console.log("Effect function");
@@ -181,7 +184,7 @@ const Login = (props) => {
   const submitHandler = (event) => {
     event.preventDefault();
     // В данном случае мы отправляем значение из поля value, из состояния emailState
-    props.onLogin(emailState.value, passwordState.value);
+    ctx.onLogin(emailState.value, passwordState.value);
   };
 
   return (

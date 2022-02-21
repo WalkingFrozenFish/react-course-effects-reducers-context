@@ -33,7 +33,7 @@ import styles from "./Navigation.module.css";
 // }
 
 // Так же можно использовать специальный хук useContext
-const Navigation = (props) => {
+const Navigation = () => {
   // В аргумент хука передаем сам контекст, и обращаемся к нему
   const ctx = useContext(AuthContext);
   return (
@@ -51,7 +51,7 @@ const Navigation = (props) => {
         )}
         {ctx.isLoggedIn && (
           <li>
-            <button onClick={props.onLogout}>Выйти</button>
+            <button onClick={ctx.onLogout}>Выйти</button>
           </li>
         )}
       </ul>
